@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import requests
-import pdb
 from bs4 import BeautifulSoup
 
 URL = "https://www.511virginia.org/mobile/?menu_id=Prince%20George%20County&ident=County%7CPrince%20George%20County"
