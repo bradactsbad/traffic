@@ -74,7 +74,11 @@ def cli():
         output += search(TERM, reports)
     if args.rt5:
         TERM = "rt. 5E/W"
-        output += search(TERM, reports)
+        results = search(TERM, reports)
+        if len(results) == 0:
+            output += ["There are no results for SR5 at this time."]
+        else:
+            output += results
     if args.location:
         output += search(args.location, reports)
     else:
