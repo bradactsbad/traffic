@@ -46,7 +46,7 @@ def cli():
             help="Return available information on the Benjamin Harrison bridge.",
         )
         parser.add_argument(
-            "--rt5", action="store_true", help="Return available information on SR5."
+            "--rt5", action="store_true", help="Return available information on VA-5."
         )
         parser.add_argument(
             "location",
