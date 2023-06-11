@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import yaml
 import requests
 import argparse
 from functools import reduce
@@ -18,14 +17,15 @@ def get_511(url):
 
 
 def load_urls_from_config():
-    URLS_FILENAME = "urls.yaml"
+    URLS_FILENAME = "urls.txt"
 
     def urls_filepath(filename):
         script_path = os.path.dirname(os.path.realpath(__file__))
         return os.path.join(script_path, filename)
 
-    with open(urls_filepath(URLS_FILENAME), "r") as urls_file:
-        return yaml.safe_load(urls_file)["urls"]
+    with open(urls_filepath(URLS_FILENAME)) as f:
+        urls = f.read().splitlines()
+    return urls
 
 
 def get_reports_from_urls(urls):
@@ -52,7 +52,7 @@ def cli():
             "location",
             nargs="?",
             default=None,
-            help="Search data for a location. Case insensitive. Optional; if this is empty along with all options, the program returns all data.",
+            help="Find results including [location]. Case insensitive. Optional. If this and all options are empty, the program returns all data.",
         )
         return parser.parse_args()
 
