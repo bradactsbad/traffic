@@ -4,6 +4,9 @@ import os
 import yaml
 import requests
 import argparse
+from functools import reduce
+from operator import concat
+from concurrent import futures
 from bs4 import BeautifulSoup
 
 
@@ -14,7 +17,7 @@ def get_511(url):
     return [report.text.strip() for report in reports]
 
 
-def load_reports_from_config():
+def load_urls_from_config():
     URLS_FILENAME = "urls.yaml"
 
     def urls_filepath(filename):
@@ -22,11 +25,14 @@ def load_reports_from_config():
         return os.path.join(script_path, filename)
 
     with open(urls_filepath(URLS_FILENAME), "r") as urls_file:
-        URLS = yaml.safe_load(urls_file)["urls"]
+        return yaml.safe_load(urls_file)["urls"]
+
+
+def get_reports_from_urls(urls):
     reports = []
-    for url in URLS:
-        reports += get_511(url)
-    return reports
+    with futures.ThreadPoolExecutor(max_workers=8) as executor:
+        reports = list(executor.map(get_511, urls))
+    return reduce(concat, reports)
 
 
 def cli():
@@ -52,7 +58,7 @@ def cli():
 
     def print_output(output):
         if len(output) == 0:
-            print("No results to display.")
+            print("No results to display. \n")
         else:
             for line in output:
                 print(line + "\n")
@@ -61,7 +67,7 @@ def cli():
         return [report for report in reports if term.lower() in report.lower()]
 
     args = parse_args()
-    reports = load_reports_from_config()
+    reports = get_reports_from_urls(load_urls_from_config())
     output = []
     if args.bridge:
         TERM = "Benjamin Harrison Bridge"
