@@ -4,6 +4,7 @@ import os
 import yaml
 import requests
 import argparse
+import re
 from functools import reduce
 from operator import concat
 from concurrent import futures
@@ -66,8 +67,17 @@ def cli():
                 else:
                     print(line + "\n")
 
-    def search(term, reports):
-        return [report for report in reports if term.lower() in report.lower()]
+    def search(terms, reports):
+        def search_by_term(term, reports):
+            return [report for report in reports if term.lower() in report.lower()]
+
+        results = []
+        if type(terms) is str:
+            results += search_by_term(terms, reports)
+        else:
+            for term in terms:
+                results += search_by_term(term, reports)
+        return results
 
     args = parse_args()
     reports = get_reports_from_urls(load_urls_from_config())
@@ -76,10 +86,10 @@ def cli():
         TERM = "Benjamin Harrison Bridge"
         output += search(TERM, reports)
     if args.rt5:
-        TERM = "rt. 5E/W"
-        results = search(TERM, reports)
+        TERMS = ("rt. 5E/W", "VA-5")
+        results = search(TERMS, reports)
         if len(results) == 0:
-            output += ["There are no results for SR5 at this time."]
+            output += ["There are no results for VA-5 at this time."]
         else:
             output += results
     if args.location:
