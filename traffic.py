@@ -58,10 +58,14 @@ def cli():
 
     def print_output(output):
         if len(output) == 0:
-            print("No results to display. \n")
+            print("No results to display.")
         else:
-            for line in output:
-                print(line + "\n")
+            output[-1] = output[-1].rstrip()
+            for i, line in enumerate(output):
+                if i == len(output) - 1:
+                    print(line)
+                else:
+                    print(line + "\n")
 
     def search(term, reports):
         return [report for report in reports if term.lower() in report.lower()]
