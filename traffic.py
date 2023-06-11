@@ -24,7 +24,13 @@ def load_from_yaml():
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        prog="Traffic Scraper", description="Virginia 511 compatible traffic scraper."
+        prog="traffic", description="Virginia 511 compatible traffic scraper."
+    )
+    parser.add_argument(
+        "location",
+        nargs="?",
+        default=None,
+        help="optional, if not supplied returns all",
     )
     parser.add_argument("-b", "--bridge", action="store_true")
     return parser.parse_args()
@@ -32,10 +38,11 @@ def parse_args():
 
 def main():
     args = parse_args()
-    bridge_only = args.bridge
     reports = load_from_yaml()
-    if bridge_only:
+    if args.bridge:
         reports = [report for report in reports if "Benjamin Harrison Bridge" in report]
+    if args.location:
+        reports = [report for report in reports if args.location in report]
     for report in reports:
         print(report + "\n")
 
