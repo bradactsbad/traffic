@@ -66,16 +66,10 @@ def cli():
                 else:
                     print(line + "\n")
 
-    def search(terms, reports):
-        def search_by_term(term, reports):
-            return [report for report in reports if term.lower() in report.lower()]
-
+    def search(reports, *terms):
         results = []
-        if type(terms) is str:
-            results += search_by_term(terms, reports)
-        else:
-            for term in terms:
-                results += search_by_term(term, reports)
+        for term in terms:
+            results += [report for report in reports if term.lower() in report.lower()]
         return results
 
     args = parse_args()
@@ -83,10 +77,10 @@ def cli():
     output = []
     if args.bridge:
         TERM = "Benjamin Harrison Bridge"
-        output += search(TERM, reports)
+        output += search(reports, TERM)
     if args.rt5:
         TERMS = ("rt. 5E/W", "VA-5")
-        results = search(TERMS, reports)
+        results = search(reports, *TERMS)
         if len(results) == 0:
             output += ["There are no results for VA-5 at this time."]
         else:
