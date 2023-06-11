@@ -60,7 +60,6 @@ def cli():
         if len(output) == 0:
             print("No results to display.")
         else:
-            output[-1] = output[-1].rstrip()
             for i, line in enumerate(output):
                 if i == len(output) - 1:
                     print(line)
