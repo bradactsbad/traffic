@@ -15,10 +15,13 @@ def get_511(url):
 
 
 def load_reports_from_config():
-    URLS_FILE = "urls.yaml"
-    traffic_path = os.path.dirname(os.path.realpath(__file__))
-    urls_filepath = os.path.join(traffic_path, URLS_FILE)
-    with open(urls_filepath, "r") as urls_file:
+    URLS_FILENAME = "urls.yaml"
+
+    def urls_filepath(filename):
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        return os.path.join(script_path, filename)
+
+    with open(urls_filepath(URLS_FILENAME), "r") as urls_file:
         URLS = yaml.safe_load(urls_file)["urls"]
     reports = []
     for url in URLS:
@@ -48,8 +51,11 @@ def cli():
         return parser.parse_args()
 
     def print_output(output):
-        for line in output:
-            print(line + "\n")
+        if len(output) == 0:
+            print("No results to display.")
+        else:
+            for line in output:
+                print(line + "\n")
 
     def search(term, reports):
         return [report for report in reports if term.lower() in report.lower()]
