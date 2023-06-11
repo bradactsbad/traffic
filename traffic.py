@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import yaml
 import requests
 import argparse
@@ -14,7 +15,10 @@ def get_511(url):
 
 
 def load_reports_from_config():
-    with open("urls.yaml", "r") as urls_file:
+    URLS_FILE = "urls.yaml"
+    traffic_path = os.path.dirname(os.path.realpath(__file__))
+    urls_filepath = os.path.join(traffic_path, URLS_FILE)
+    with open(urls_filepath, "r") as urls_file:
         URLS = yaml.safe_load(urls_file)["urls"]
     reports = []
     for url in URLS:
