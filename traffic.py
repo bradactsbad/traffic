@@ -4,7 +4,6 @@ import os
 import yaml
 import requests
 import argparse
-import re
 from functools import reduce
 from operator import concat
 from concurrent import futures
