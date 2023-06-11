@@ -10,8 +10,9 @@ from bs4 import BeautifulSoup
 
 
 class Traffic:
+    URLS_FILENAME = "urls.txt"
+
     def __init__(self):
-        self.urls_filename = "urls.txt"
         self.urls = self._load_urls_from_config()
         self.reports = self._get_reports_from_urls()
 
@@ -27,7 +28,7 @@ class Traffic:
             script_path = os.path.dirname(os.path.realpath(__file__))
             return os.path.join(script_path, filename)
 
-        with open(urls_filepath(self.urls_filename)) as f:
+        with open(urls_filepath(Traffic.URLS_FILENAME)) as f:
             urls = f.read().splitlines()
         return urls
 
