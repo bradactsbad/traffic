@@ -54,12 +54,15 @@ class Cli:
             self.bridge()
         if self.args.rt5:
             self.rt5()
-        if self.args.location:
-            self.output += self.traffic.search(self.args.location)
+        if self.args.search:
+            self.search()
         else:
-            if not self.args.rt5 and not self.args.bridge:
+            if not any((self.args.rt5, self.args.bridge)):
                 self.output = self.traffic.reports
         self.print_output()
+
+    def search(self):
+        self.output += self.traffic.search(self.args.search)
 
     @staticmethod
     def parse_args():
@@ -75,10 +78,10 @@ class Cli:
             "--rt5", action="store_true", help="Return available information on VA-5."
         )
         parser.add_argument(
-            "location",
+            "search",
             nargs="?",
             default=None,
-            help="Find results including [location]. Case insensitive. Optional. If this and all options are empty, the program returns all data.",
+            help="Find results including [search]. Case insensitive. Optional. If this and all options are empty, the program returns all data.",
         )
         return parser.parse_args()
 
