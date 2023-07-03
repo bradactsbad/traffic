@@ -75,7 +75,7 @@ def main():
             if i == len(output) - 1:
                 print(line)
             else:
-                print(line + "\n")
+                print(line + "\n")  # type: ignore
 
 
 if __name__ == "__main__":
