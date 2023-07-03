@@ -15,15 +15,15 @@ https://www.511virginia.org/mobile/?menu_id=New%20Kent%20County&ident=County%7CN
 https://www.511virginia.org/mobile/?menu_id=Chesterfield%20County&ident=County%7CChesterfield%20County"""
 
 
-def fetch():
-    def fetch(url):
+def get():
+    def get(url):
         with urllib.request.urlopen(url) as resp:
             soup = BeautifulSoup(resp, "xml")
         reports = soup.find_all("div", {"class": "reportBody"})
         return [report.text.strip() for report in reports]
 
     with futures.ThreadPoolExecutor(max_workers=8) as executor:
-        reports = list(executor.map(fetch, URLS.splitlines()))
+        reports = list(executor.map(get, URLS.splitlines()))
     return reduce(concat, reports)
 
 
@@ -54,7 +54,7 @@ def main():
     )
     args = parser.parse_args()
     output = []
-    reports = fetch()
+    reports = get()
     if args.bridge:
         output += search(reports, "Benjamin Harrison Bridge")
     if args.rt5:
