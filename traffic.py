@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 import urllib.request
 import argparse
 from functools import reduce
@@ -34,7 +33,7 @@ def search(reports, *terms):
     return results
 
 
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="traffic", description="Virginia 511 road information."
     )
@@ -76,7 +75,3 @@ def main():
                 print(line)
             else:
                 print(line + "\n")  # type: ignore
-
-
-if __name__ == "__main__":
-    main()
