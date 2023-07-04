@@ -17,7 +17,7 @@ https://www.511virginia.org/mobile/?menu_id=Chesterfield%20County&ident=County%7
 def get():
     def get(url):
         with urllib.request.urlopen(url) as resp:
-            soup = BeautifulSoup(resp, "xml")
+            soup = BeautifulSoup(resp, "html.parser")
         reports = soup.find_all("div", {"class": "reportBody"})
         return [report.text.strip() for report in reports]
 
